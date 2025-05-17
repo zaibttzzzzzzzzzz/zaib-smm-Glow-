@@ -3,29 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate SMM Panel</title>
+    <title>Glow SMM Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --glow: #7a00ff;
-            --bg: #0a0a1a;
-            --card: #1a1a2e;
+            --bg: #ffffff;
+            --card: #f5f5ff;
+            --text: #2a2a2a;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         body {
             background: var(--bg);
-            color: white;
+            color: var(--text);
             min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
         }
 
+        /* ग्लो इफेक्ट */
         .glow-bulbs {
             position: fixed;
             width: 100vw;
@@ -36,178 +37,310 @@
 
         .bulb {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             animation: glow 2s infinite;
+            filter: blur(1px);
         }
 
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px currentColor; }
-            50% { box-shadow: 0 0 50px currentColor; }
+            0%, 100% { 
+                box-shadow: 0 0 15px currentColor;
+                transform: scale(0.9);
+            }
+            50% { 
+                box-shadow: 0 0 30px currentColor;
+                transform: scale(1.1);
+            }
         }
 
-        .auth-box {
-            background: rgba(255,255,255,0.05);
-            width: 400px;
-            padding: 30px;
-            border-radius: 15px;
-            position: relative;
-            z-index: 1;
+        /* लॉगिन पेज */
+        .auth-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 2rem;
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             backdrop-filter: blur(10px);
-            margin: 50px auto;
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand-header i {
+            font-size: 3rem;
+            color: var(--glow);
+            margin-bottom: 1rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--glow);
+            box-shadow: 0 0 10px rgba(122,0,255,0.1);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--glow);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(45deg, #7a00ff, #a100ff);
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(122,0,255,0.3);
+        }
+
+        /* पैनल डिज़ाइन */
+        #mainPanel {
+            display: none;
+            padding: 20px;
+        }
+
+        .panel-header {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .panel-header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #7a00ff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            padding: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .category-btn {
-            background: var(--card);
+            padding: 1.5rem;
             border: none;
-            padding: 15px;
-            border-radius: 10px;
-            color: white;
+            border-radius: 15px;
+            background: var(--card);
             cursor: pointer;
             transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-btn i {
+            font-size: 2rem;
+            color: var(--glow);
         }
 
         .category-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px var(--glow);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(122,0,255,0.1);
         }
 
+        /* सर्विस कार्ड */
         .service-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            padding: 2rem;
         }
 
         .service-card {
-            background: var(--card);
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.1);
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
         .order-form {
-            background: var(--card);
-            padding: 20px;
-            border-radius: 10px;
-            max-width: 500px;
-            margin: 20px auto;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--glow);
-            border-radius: 8px;
-            color: white;
-        }
-
-        .pay-btn {
-            background: linear-gradient(45deg, #25D366, #128C7E);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
-
-        .hidden {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 350px;
             display: none;
         }
     </style>
 </head>
 <body>
+    <!-- ग्लो इफेक्ट -->
     <div class="glow-bulbs">
-        <div class="bulb" style="top:10%; left:20%; color:#ff0000;"></div>
-        <div class="bulb" style="top:30%; left:70%; color:#00ff00;"></div>
-        <div class="bulb" style="top:70%; left:40%; color:#0000ff;"></div>
-        <!-- 50+ bulbs will auto-generate -->
+        <div class="bulb" style="top:10%; left:20%; color:#ff99e6;"></div>
+        <div class="bulb" style="top:30%; left:70%; color:#99ccff;"></div>
+        <div class="bulb" style="top:70%; left:40%; color:#cc99ff;"></div>
     </div>
 
-    <!-- Auth Section -->
-    <div id="authSection" class="auth-box">
-        <h2 style="text-align:center; margin-bottom:20px;">Ultimate SMM Panel</h2>
-        <input type="email" class="form-input" placeholder="Email Address" id="email">
-        <input type="password" class="form-input" placeholder="Password" id="password">
-        <button class="pay-btn" onclick="login()">Login</button>
-        <p style="text-align:center; margin-top:15px;">New user? <a href="#" onclick="toggleAuth()">Create Account</a></p>
+    <!-- लॉगिन सेक्शन -->
+    <div class="auth-container" id="authSection">
+        <div class="brand-header">
+            <i class="fas fa-rocket"></i>
+            <h1>Glow SMM Panel</h1>
+        </div>
+        
+        <div class="input-group">
+            <input type="email" placeholder="Email Address" id="email">
+        </div>
+        
+        <div class="input-group">
+            <input type="password" placeholder="Password" id="password">
+        </div>
+        
+        <button class="auth-btn" onclick="login()">Login</button>
+        
+        <p style="text-align:center; margin-top:1rem;">
+            New user? <a href="#" style="color:var(--glow)" onclick="showRegister()">Create Account</a>
+        </p>
     </div>
 
-    <!-- Main Panel -->
-    <div id="mainPanel" class="hidden">
+    <!-- मुख्य पैनल -->
+    <div id="mainPanel">
+        <div class="panel-header">
+            <h1>Glow SMM Services</h1>
+        </div>
+
         <div class="category-grid">
-            <button class="category-btn" data-category="tiktok">TikTok (14)</button>
-            <button class="category-btn" data-category="youtube">YouTube (13)</button>
-            <button class="category-btn" data-category="instagram">Instagram (13)</button>
-            <button class="category-btn" data-category="facebook">Facebook (11)</button>
-            <button class="category-btn" data-category="twitter">Twitter (8)</button>
-            <button class="category-btn" data-category="country">Country (5)</button>
+            <button class="category-btn" onclick="showServices('tiktok')">
+                <i class="fab fa-tiktok"></i>
+                TikTok
+            </button>
+            
+            <button class="category-btn" onclick="showServices('youtube')">
+                <i class="fab fa-youtube"></i>
+                YouTube
+            </button>
+
+            <button class="category-btn" onclick="showServices('instagram')">
+                <i class="fab fa-instagram"></i>
+                Instagram
+            </button>
+
+            <button class="category-btn" onclick="showServices('facebook')">
+                <i class="fab fa-facebook"></i>
+                Facebook
+            </button>
         </div>
 
         <div class="service-grid" id="servicesContainer"></div>
 
-        <div class="order-form hidden" id="orderForm">
-            <h3 id="selectedService"></h3>
-            <input type="url" class="form-input" placeholder="Video/Profile Link" id="orderLink">
-            <select class="form-input" id="paymentMethod">
-                <option value="jazzcash">JazzCash</option>
-                <option value="easypaisa">EasyPaisa</option>
-            </select>
-            <input type="tel" class="form-input" placeholder="Your Phone Number" id="userNumber">
-            <button class="pay-btn" onclick="processPayment()">Complete Payment</button>
-        </div>
-
-        <a href="https://wa.me/923438220191?text=Hello%20Support%21%20I%20need%20help" 
-           class="pay-btn" 
+        <!-- सपोर्ट बटन -->
+        <a href="https://wa.me/923438220191" 
+           class="auth-btn" 
            style="position:fixed; bottom:30px; right:30px; width:auto;"
            target="_blank">
-            📞 24/7 Support
+            <i class="fab fa-whatsapp"></i> 24/7 Support
         </a>
     </div>
 
     <script>
-        // Service Database (All Your Services)
+        // सर्विस डेटा
         const services = {
             tiktok: [
-                { name: "TikTok Likes (Instant)", price: 180, min: 500 },
-                { name: "TikTok PAK Followers", price: 650, min: 500 },
-                { name: "TikTok USA Followers", price: 550, min: 500 },
-                { name: "TikTok UK Followers", price: 600, min: 500 },
-                { name: "TikTok Comments", price: 300, min: 500 },
-                { name: "TikTok Live Views", price: 305, min: 500 },
-                { name: "TikTok Shares", price: 200, min: 500 },
-                { name: "TikTok Video Downloads", price: 150, min: 1000 },
-                { name: "TikTok Profile Visits", price: 100, min: 1000 },
-                { name: "TikTok Verified Badge", price: 15000, min: 1 }
+                { name: "TikTok Followers", price: 650, min: 1000 },
+                { name: "TikTok Likes", price: 180, min: 1000 }
             ],
             youtube: [
-                { name: "YouTube Subscribers (Real)", price: 1050, min: 1000 },
-                { name: "YouTube Subscribers (Premium)", price: 1500, min: 1000 },
-                { name: "YouTube Likes", price: 500, min: 1000 },
-                { name: "YouTube Dislikes", price: 50, min: 100 },
-                { name: "YouTube Views (Instant)", price: 300, min: 5000 },
-                { name: "YouTube Views (HR)", price: 500, min: 5000 },
-                { name: "YouTube Watch Hours", price: 8000, min: 4000 },
-                { name: "YouTube Comments", price: 300, min: 1000 },
-                { name: "YouTube Shares", price: 50, min: 5 }
+                { name: "YouTube Subscribers", price: 1500, min: 1000 },
+                { name: "YouTube Views", price: 500, min: 5000 }
             ],
             instagram: [
-                { name: "Instagram Followers (Real)", price: 1000, min: 1000 },
-                { name: "Instagram Followers (Premium)", price: 1490, min: 1000 },
-                { name: "Instagram Likes (Photo)", price: 50, min: 100 },
-                { name: "Instagram Likes (Reels)", price: 850, min: 100 },
-                { name: "Instagram Story Views", price: 150, min: 1000 },
-                { name: "Instagram Reels Views", price: 200, min: 5000 },
-                { name: "Instagram Comments", price: 50, min: 3 }
+                { name: "Instagram Followers", price: 1490, min: 1000 },
+                { name: "Instagram Likes", price: 850, min: 1000 }
+            ],
+            facebook: [
+                { name: "Facebook Page Likes", price: 180, min: 1000 },
+                { name: "Post Likes", price: 100, min: 1000 }
+            ]
+        };
+
+        // लॉगिन फंक्शन
+        function login() {
+            document.getElementById('authSection').style.display = 'none';
+            document.getElementById('mainPanel').style.display = 'block';
+        }
+
+        // सर्विसेस दिखाएं
+        function showServices(platform) {
+            const container = document.getElementById('servicesContainer');
+            container.innerHTML = services[platform].map(service => `
+                <div class="service-card">
+                    <h3>${service.name}</h3>
+                    <p>PKR ${service.price}/${service.min}+</p>
+                    <button class="auth-btn" style="margin-top:10px;" 
+                            onclick="openOrderForm('${service.name}', ${service.price})">
+                        Order Now
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        // ऑर्डर फॉर्म
+        function openOrderForm(service, price) {
+            const message = `Order: ${service}%0APrice: PKR ${price}%0A%0APlease send:${price} to:%0A• JazzCash: 0343-8220191%0A• EasyPaisa: 0343-8220191%0A%0ATransaction ID:`;
+            
+            window.open(`https://wa.me/923438220191?text=${message}`, '_blank');
+        }
+
+        // रजिस्टर फॉर्म
+        function showRegister() {
+            document.getElementById('authSection').innerHTML = `
+                <div class="brand-header">
+                    <i class="fas fa-user-plus"></i>
+                    <h1>Create Account</h1>
+                </div>
+                
+                <div class="input-group">
+                    <input type="email" placeholder="Email" id="regEmail">
+                </div>
+                
+                <div class="input-group">
+                    <input type="tel" placeholder="Phone Number" id="regPhone">
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" placeholder="Password" id="regPass">
+                </div>
+                
+                <button class="auth-btn" onclick="register()">Register</button>
+                
+                <p style="text-align:center; margin-top:1rem;">
+                    Already user? <a href="#" style="color:var(--glow)" onclick="location.reload()">Login</a>
+                </p>
+            `;
+        }
+
+        function register() {
+            alert('Registration successful!');
+            login();
+        }
+    </script>
+</body>
+    </html>

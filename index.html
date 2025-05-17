@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate SMM Panel</title>
+    <style>
+        :root {
+            --glow: #7a00ff;
+            --bg: #0a0a1a;
+            --card: #1a1a2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: white;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .glow-bulbs {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bulb {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px currentColor; }
+            50% { box-shadow: 0 0 50px currentColor; }
+        }
+
+        .auth-box {
+            background: rgba(255,255,255,0.05);
+            width: 400px;
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            margin: 50px auto;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .category-btn {
+            background: var(--card);
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .category-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px var(--glow);
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .service-card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .order-form {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glow);
+            border-radius: 8px;
+            color: white;
+        }
+
+        .pay-btn {
+            background: linear-gradient(45deg, #25D366, #128C7E);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-bulbs">
+        <div class="bulb" style="top:10%; left:20%; color:#ff0000;"></div>
+        <div class="bulb" style="top:30%; left:70%; color:#00ff00;"></div>
+        <div class="bulb" style="top:70%; left:40%; color:#0000ff;"></div>
+        <!-- 50+ bulbs will auto-generate -->
+    </div>
+
+    <!-- Auth Section -->
+    <div id="authSection" class="auth-box">
+        <h2 style="text-align:center; margin-bottom:20px;">Ultimate SMM Panel</h2>
+        <input type="email" class="form-input" placeholder="Email Address" id="email">
+        <input type="password" class="form-input" placeholder="Password" id="password">
+        <button class="pay-btn" onclick="login()">Login</button>
+        <p style="text-align:center; margin-top:15px;">New user? <a href="#" onclick="toggleAuth()">Create Account</a></p>
+    </div>
+
+    <!-- Main Panel -->
+    <div id="mainPanel" class="hidden">
+        <div class="category-grid">
+            <button class="category-btn" data-category="tiktok">TikTok (14)</button>
+            <button class="category-btn" data-category="youtube">YouTube (13)</button>
+            <button class="category-btn" data-category="instagram">Instagram (13)</button>
+            <button class="category-btn" data-category="facebook">Facebook (11)</button>
+            <button class="category-btn" data-category="twitter">Twitter (8)</button>
+            <button class="category-btn" data-category="country">Country (5)</button>
+        </div>
+
+        <div class="service-grid" id="servicesContainer"></div>
+
+        <div class="order-form hidden" id="orderForm">
+            <h3 id="selectedService"></h3>
+            <input type="url" class="form-input" placeholder="Video/Profile Link" id="orderLink">
+            <select class="form-input" id="paymentMethod">
+                <option value="jazzcash">JazzCash</option>
+                <option value="easypaisa">EasyPaisa</option>
+            </select>
+            <input type="tel" class="form-input" placeholder="Your Phone Number" id="userNumber">
+            <button class="pay-btn" onclick="processPayment()">Complete Payment</button>
+        </div>
+
+        <a href="https://wa.me/923438220191?text=Hello%20Support%21%20I%20need%20help" 
+           class="pay-btn" 
+           style="position:fixed; bottom:30px; right:30px; width:auto;"
+           target="_blank">
+            📞 24/7 Support
+        </a>
+    </div>
+
+    <script>
+        // Service Database (All Your Services)
+        const services = {
+            tiktok: [
+                { name: "TikTok Likes (Instant)", price: 180, min: 500 },
+                { name: "TikTok PAK Followers", price: 650, min: 500 },
+                { name: "TikTok USA Followers", price: 550, min: 500 },
+                { name: "TikTok UK Followers", price: 600, min: 500 },
+                { name: "TikTok Comments", price: 300, min: 500 },
+                { name: "TikTok Live Views", price: 305, min: 500 },
+                { name: "TikTok Shares", price: 200, min: 500 },
+                { name: "TikTok Video Downloads", price: 150, min: 1000 },
+                { name: "TikTok Profile Visits", price: 100, min: 1000 },
+                { name: "TikTok Verified Badge", price: 15000, min: 1 }
+            ],
+            youtube: [
+                { name: "YouTube Subscribers (Real)", price: 1050, min: 1000 },
+                { name: "YouTube Subscribers (Premium)", price: 1500, min: 1000 },
+                { name: "YouTube Likes", price: 500, min: 1000 },
+                { name: "YouTube Dislikes", price: 50, min: 100 },
+                { name: "YouTube Views (Instant)", price: 300, min: 5000 },
+                { name: "YouTube Views (HR)", price: 500, min: 5000 },
+                { name: "YouTube Watch Hours", price: 8000, min: 4000 },
+                { name: "YouTube Comments", price: 300, min: 1000 },
+                { name: "YouTube Shares", price: 50, min: 5 }
+            ],
+            instagram: [
+                { name: "Instagram Followers (Real)", price: 1000, min: 1000 },
+                { name: "Instagram Followers (Premium)", price: 1490, min: 1000 },
+                { name: "Instagram Likes (Photo)", price: 50, min: 100 },
+                { name: "Instagram Likes (Reels)", price: 850, min: 100 },
+                { name: "Instagram Story Views", price: 150, min: 1000 },
+                { name: "Instagram Reels Views", price: 200, min: 5000 },
+                { name: "Instagram Comments", price: 50, min: 3 }
